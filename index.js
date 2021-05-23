@@ -34,7 +34,7 @@ client.connect(err => {
    app.delete('/deleteUser', (req, res) => {
       const id = req.body.id;
       userCollection.findOneAndDelete({ _id: ObjectID(id) }).then(result => {
-         console.log(result);
+         res.send(result.ok > 0);
       });
    });
 });

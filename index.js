@@ -23,7 +23,7 @@ client.connect(err => {
       console.log(req.body);
       const user = req.body;
       userCollection.insertOne(user).then(result => {
-         console.log(result);
+         res.send(result.insertedCount > 0);
       });
    });
 
@@ -33,9 +33,9 @@ client.connect(err => {
 
    app.delete('/deleteUser', (req, res) => {
       const id = req.body.id;
-      userCollection
-         .findOneAndDelete({ _id: ObjectID(id) })
-         .then(result => console.log(result));
+      userCollection.findOneAndDelete({ _id: ObjectID(id) }).then(result => {
+         console.log(result);
+      });
    });
 });
 

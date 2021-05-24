@@ -16,21 +16,27 @@ const client = new MongoClient(uri, {
    useUnifiedTopology: true,
 });
 client.connect(err => {
-   // console.log(err);
+   console.log(err);
    const userCollection = client.db('ibos').collection('users');
 
    app.post('/addUsers', (req, res) => {
       const user = req.body;
       userCollection.find({}).toArray((err, result) => {
-         result.map(data => {
-            if (data.email !== user.email || data.email === undefined) {
-               userCollection.insertOne(user).then(result => {
-                  res.send(result.insertedCount > 0);
-               });
-            } else {
+         if (result.length === 0) {
+            userCollection.insertOne(user).then(result => {
                res.send(result.insertedCount > 0);
-            }
-         });
+            });
+         } else {
+            result.map(data => {
+               if (data.email !== user.email) {
+                  userCollection.insertOne(user).then(result => {
+                     res.send(result.insertedCount > 0);
+                  });
+               } else {
+                  res.send(result.insertedCount > 0);
+               }
+            });
+         }
       });
    });
 

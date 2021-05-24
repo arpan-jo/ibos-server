@@ -23,7 +23,7 @@ client.connect(err => {
       const user = req.body;
       userCollection.find({}).toArray((err, result) => {
          result.map(data => {
-            if (data.email !== user.email && data.email === undefined) {
+            if (data.email !== user.email || data.email === undefined) {
                userCollection.insertOne(user).then(result => {
                   res.send(result.insertedCount > 0);
                });

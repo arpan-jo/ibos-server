@@ -1,1 +1,1 @@
-# ibos
+# Demo server
